@@ -1,26 +1,41 @@
 const path = require('path');
+const HtmlWEbpackPlugin = require('html-webpack-plugin');
 
-module.exports={
+module.exports = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
     },
-    resolve:{
-        extensions:['.js', '.jsx']
+    resolve: {
+        extensions: ['.js', '.jsx']
     },
-    module:{
-        rules:[
+    module: {
+        rules: [
             {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
-                use:{
+                use: {
                     loader: 'babel-loader'
                 }
+            },
+            {
+                test: /\.html$/,
+                use: [
+                    {
+                        loader: 'html-loader'
+                    }
+                ]
             }
         ]
     },
-    devServer:{
+    plugins: [
+        new HtmlWEbpackPlugin({
+            template: './public/index.html',
+            filename: './index.html'
+        }),
+    ],
+    devServer: {
         static: path.join(__dirname, 'dist'),
         compress: true,
         port: 3006
